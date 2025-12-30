@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Admin\AppointmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,17 +53,21 @@ Route::prefix('v1')->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
         Route::post('/refresh', [AuthController::class, 'refresh']);
 
-        // Admin dashboard routes will be added here
-        // Route::get('/dashboard', [DashboardController::class, 'index']);
+        // Appointments management (admin only)
+        Route::prefix('appointments')->group(function () {
+            Route::get('/statistics', [AppointmentController::class, 'statistics']);
+            Route::post('/{id}/approve', [AppointmentController::class, 'approve']);
+            Route::post('/{id}/cancel', [AppointmentController::class, 'cancel']);
+            Route::post('/{id}/reject', [AppointmentController::class, 'reject']);
+            Route::post('/{id}/complete', [AppointmentController::class, 'complete']);
+        });
+        Route::apiResource('appointments', AppointmentController::class);
         
         // Doctors management (admin only)
         // Route::apiResource('doctors', DoctorController::class);
         
         // Patients management (admin only)
         // Route::apiResource('patients', PatientController::class);
-        
-        // Appointments management (admin only)
-        // Route::apiResource('appointments', AppointmentController::class);
         
         // Services management (admin only)
         // Route::apiResource('services', ServiceController::class);
