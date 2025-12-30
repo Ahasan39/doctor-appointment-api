@@ -1,0 +1,437 @@
+{
+  "info": {
+    "name": "Doctor Appointment API v2",
+    "description": "Complete API collection for Doctor Appointment System with Admin Authentication",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "2.0.0"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "admin_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        },
+        "description": "Check if the API is running"
+      }
+    },
+    {
+      "name": "Admin Authentication",
+      "item": [
+        {
+          "name": "Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"admin_token\", jsonData.data.token);",
+                  "    pm.collectionVariables.set(\"admin_token\", jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@doctorappoint.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/admin/login",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "login"]
+            },
+            "description": "Login as admin user. Token will be automatically saved."
+          }
+        },
+        {
+          "name": "Get Admin Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/admin/me",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "me"]
+            },
+            "description": "Get authenticated admin user information"
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"admin_token\", jsonData.data.token);",
+                  "    pm.collectionVariables.set(\"admin_token\", jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/admin/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "refresh"]
+            },
+            "description": "Refresh authentication token. New token will be automatically saved."
+          }
+        },
+        {
+          "name": "Admin Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/admin/logout",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "logout"]
+            },
+            "description": "Logout from current device"
+          }
+        },
+        {
+          "name": "Logout All Devices",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/admin/logout-all",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "logout-all"]
+            },
+            "description": "Logout from all devices"
+          }
+        }
+      ],
+      "description": "Admin authentication endpoints"
+    },
+    {
+      "name": "Appointments (Admin)",
+      "item": [
+        {
+          "name": "Get All Appointments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/admin/appointments",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "appointments"]
+            },
+            "description": "Get all appointments (Admin only)"
+          }
+        },
+        {
+          "name": "Get Appointment by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/admin/appointments/1",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "appointments", "1"]
+            },
+            "description": "Get specific appointment details"
+          }
+        },
+        {
+          "name": "Create Appointment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"doctor_id\": 1,\n  \"service_id\": 1,\n  \"name\": \"John Doe\",\n  \"phone\": \"+1234567890\",\n  \"message\": \"Need consultation for chest pain\",\n  \"preferred_date\": \"2025-01-15\",\n  \"preferred_time\": \"10:00:00\",\n  \"status\": \"pending\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/admin/appointments",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "appointments"]
+            },
+            "description": "Create new appointment"
+          }
+        },
+        {
+          "name": "Update Appointment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"confirmed\",\n  \"admin_notes\": \"Appointment confirmed\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/admin/appointments/1",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "appointments", "1"]
+            },
+            "description": "Update appointment details"
+          }
+        },
+        {
+          "name": "Delete Appointment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/admin/appointments/1",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "appointments", "1"]
+            },
+            "description": "Delete appointment"
+          }
+        }
+      ],
+      "description": "Appointment management endpoints (Admin only)"
+    },
+    {
+      "name": "Services (Admin)",
+      "item": [
+        {
+          "name": "Get All Services",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/admin/services",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "services"]
+            },
+            "description": "Get all services"
+          }
+        },
+        {
+          "name": "Create Service",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"General Consultation\",\n  \"description\": \"General health checkup and consultation\",\n  \"short_description\": \"Basic health checkup\",\n  \"price\": 100.00,\n  \"duration\": 30,\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/admin/services",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "services"]
+            },
+            "description": "Create new service"
+          }
+        }
+      ],
+      "description": "Service management endpoints (Admin only)"
+    },
+    {
+      "name": "Blogs (Admin)",
+      "item": [
+        {
+          "name": "Get All Blogs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/admin/blogs",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "blogs"]
+            },
+            "description": "Get all blog posts"
+          }
+        },
+        {
+          "name": "Create Blog",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"10 Tips for Heart Health\",\n  \"excerpt\": \"Learn how to keep your heart healthy...\",\n  \"content\": \"Full blog content here...\",\n  \"category\": \"Health Tips\",\n  \"tags\": [\"heart\", \"health\", \"tips\"],\n  \"status\": \"published\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/admin/blogs",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "blogs"]
+            },
+            "description": "Create new blog post"
+          }
+        }
+      ],
+      "description": "Blog management endpoints (Admin only)"
+    },
+    {
+      "name": "Doctors (Admin)",
+      "item": [
+        {
+          "name": "Get All Doctors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/admin/doctors",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "doctors"]
+            },
+            "description": "Get all doctors"
+          }
+        },
+        {
+          "name": "Create Doctor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dr. John Smith\",\n  \"email\": \"dr.smith@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"doctor\",\n  \"specialization\": \"Cardiology\",\n  \"license_number\": \"LIC123456\",\n  \"years_of_experience\": 15,\n  \"consultation_fee\": 150.00,\n  \"bio\": \"Experienced cardiologist\",\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/admin/doctors",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "admin", "doctors"]
+            },
+            "description": "Create new doctor"
+          }
+        }
+      ],
+      "description": "Doctor management endpoints (Admin only)"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{admin_token}}",
+        "type": "string"
+      }
+    ]
+  }
+}
