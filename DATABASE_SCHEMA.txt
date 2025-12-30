@@ -1,0 +1,300 @@
+
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                     DATABASE SCHEMA - DOCTOR APPOINTMENT API                   ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+✅ ALL MIGRATIONS EXECUTED SUCCESSFULLY
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 DATABASE TABLES
+
+┌─────────────────────────��──────────────────────────────────────────────────────┐
+│ 1. USERS TABLE (Enhanced for Doctors)                                         │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+  Core Fields:
+  ├── id                      (Primary Key)
+  ├── name                    (User's full name)
+  ├── email                   (Unique email)
+  ├── password                (Hashed password)
+  └── email_verified_at       (Verification timestamp)
+
+  Role & Status:
+  ├── role                    (admin | doctor | patient) [default: patient]
+  └── is_active               (boolean) [default: true]
+
+  Contact Information:
+  ├── phone                   (Contact number)
+  └── address                 (Full address)
+
+  Doctor-Specific Fields:
+  ├── specialization          (e.g., Cardiology, Neurology)
+  ├── bio                     (Doctor's biography)
+  ├── license_number          (Medical license)
+  ├── years_of_experience     (Years in practice)
+  └── consultation_fee        (Fee amount - decimal)
+
+  Media:
+  └── profile_image           (Image path)
+
+  Timestamps:
+  ├── created_at
+  └── updated_at
+
+  Relationships:
+  ├── hasMany → Appointments (as doctor)
+  └── hasMany → Blogs (as author)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌────────────────────────────────────────────────────────────────────────────────┐
+│ 2. APPOINTMENTS TABLE                                                          │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+  Core Fields:
+  ├── id                      (Primary Key)
+  ├── name                    ✅ Patient/Visitor name
+  ├── phone                   ✅ Contact phone
+  ├── message                 ✅ Appointment notes/reason
+  ├── preferred_date          ✅ Preferred date
+  └── preferred_time          (Preferred time)
+
+  Relationships:
+  ├��─ doctor_id               (Foreign Key → users.id) [nullable]
+  └── service_id              (Foreign Key → services.id) [nullable]
+
+  Status Management:
+  ├── status                  ✅ (pending | confirmed | completed | cancelled | rejected)
+  │                              [default: pending]
+  ├── admin_notes             (Admin/Doctor notes)
+  └── confirmed_at            (Confirmation timestamp)
+
+  Timestamps:
+  ├── created_at
+  └── updated_at
+
+  Relationships:
+  ├── belongsTo → User (doctor)
+  └── belongsTo → Service
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌────────────────────────────────────────────────────────────────────────────────┐
+│ 3. SERVICES TABLE                                                              │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+  Core Fields:
+  ├── id                      (Primary Key)
+  ├── name                    (Service name)
+  ├── slug                    (URL-friendly identifier) [unique]
+  ├── description             (Full description)
+  └── short_description       (Brief description)
+
+  Pricing & Duration:
+  ├── price                   (Service price - decimal)
+  └── duration                (Duration in minutes)
+
+  Media:
+  ├── icon                    (Icon class or path)
+  └── image                   (Service image)
+
+  Display:
+  ├── is_active               (boolean) [default: true]
+  └── order                   (Display order) [default: 0]
+
+  Timestamps:
+  ├── created_at
+  └── updated_at
+
+  Relationships:
+  └── hasMany → Appointments
+
+  Features:
+  └── Auto-generates slug from name
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌────────────────────────────────────────────────────────────────────────────────┐
+│ 4. BLOGS TABLE                                                                 │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+  Core Fields:
+  ├── id                      (Primary Key)
+  ├── title                   (Blog title)
+  ├── slug                    (URL-friendly identifier) [unique]
+  ├── excerpt                 (Short summary)
+  └── content                 (Full blog content - longtext)
+
+  Relationships:
+  └── author_id               (Foreign Key → users.id)
+
+  Media & Organization:
+  ├── featured_image          (Featured image path)
+  ├── category                (Blog category)
+  └── tags                    (JSON array of tags)
+
+  Publishing:
+  ├── status                  (draft | published | archived) [default: draft]
+  ├── published_at            (Publication timestamp)
+  └── views                   (View count) [default: 0]
+
+  Timestamps:
+  ├── created_at
+  └── updated_at
+
+  Relationships:
+  └── belongsTo → User (author)
+
+  Features:
+  └── Auto-generates slug from title
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 ADDITIONAL TABLES
+
+┌────────────────────────────────────────────────────────────────────────────────┐
+│ Supporting Tables                                                              │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+  ├── password_reset_tokens   (Password reset functionality)
+  ├── sessions                (Session management)
+  ���── cache                   (Cache storage)
+  └── jobs                    (Queue jobs)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔗 RELATIONSHIPS DIAGRAM
+
+  User (Doctor)
+    │
+    ├──[hasMany]──> Appointments (as doctor)
+    │
+    └──[hasMany]──> Blogs (as author)
+
+  Service
+    │
+    └──[hasMany]──> Appointments
+
+  Appointment
+    │
+    ├──[belongsTo]──> User (doctor)
+    │
+    └──[belongsTo]──> Service
+
+  Blog
+    │
+    └──[belongsTo]──> User (author)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📦 MODELS CREATED
+
+┌────────────────────────────────────────────────────────────────────────────────┐
+│ Model Files with Features                                                     │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+  1. User Model (app/Models/User.php)
+     ├── Helper Methods: isDoctor(), isAdmin(), isPatient()
+     ├── Relationships: doctorAppointments(), blogs()
+     └── Casting: is_active (boolean), consultation_fee (decimal)
+
+  2. Appointment Model (app/Models/Appointment.php)
+     ├── Scopes: pending(), confirmed(), completed(), cancelled()
+     ├── Helper Methods: isPending(), isConfirmed(), isCompleted(), isCancelled()
+     ├── Relationships: doctor(), service()
+     └── Casting: preferred_date (date), preferred_time (datetime)
+
+  3. Service Model (app/Models/Service.php)
+     ├── Scopes: active(), ordered()
+     ├── Relationships: appointments()
+     ├── Auto-generates slug from name
+     └── Casting: price (decimal), is_active (boolean)
+
+  4. Blog Model (app/Models/Blog.php)
+     ├── Scopes: published(), draft(), category(), popular(), latest()
+     ├── Helper Methods: incrementViews(), isPublished(), isDraft()
+     ├── Relationships: author()
+     ├── Auto-generates slug from title
+     └── Casting: tags (array), published_at (datetime)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ APPOINTMENT REQUIREMENTS MET
+
+  ✓ name field              → Patient/Visitor name
+  ✓ phone field             → Contact phone number
+  ✓ message field           → Appointment notes/reason
+  ✓ preferred_date field    → Preferred appointment date
+  ✓ status field            → Appointment status tracking
+
+  Additional Features:
+  ✓ Doctor assignment       → Link to specific doctor
+  ✓ Service assignment      → Link to specific service
+  ✓ Status management       → Multiple status states
+  ✓ Admin notes             → Internal notes capability
+  ✓ Confirmation tracking   → Track when confirmed
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━��━━━━━━━━━━━━━━━━━━━━
+
+🎯 MIGRATION STATUS
+
+  Migration                                                          Status
+  ────────────────────────────────────────────────────────────────────────
+  0001_01_01_000000_create_users_table                              ✅ Ran
+  0001_01_01_000001_create_cache_table                              ✅ Ran
+  0001_01_01_000002_create_jobs_table                               ✅ Ran
+  2025_12_30_065013_create_services_table                           ✅ Ran
+  2025_12_30_065019_create_blogs_table                              ✅ Ran
+  2025_12_30_065020_create_appointments_table                       ✅ Ran
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔧 USEFUL COMMANDS
+
+  View Migration Status:
+  php artisan migrate:status
+
+  Rollback Last Migration:
+  php artisan migrate:rollback
+
+  Fresh Migration (Drop & Re-run):
+  php artisan migrate:fresh
+
+  View Table Structure:
+  php artisan db:table users
+  php artisan db:table appointments
+  php artisan db:table services
+  php artisan db:table blogs
+
+  Create Seeders:
+  php artisan make:seeder UserSeeder
+  php artisan make:seeder ServiceSeeder
+  php artisan make:seeder AppointmentSeeder
+  php artisan make:seeder BlogSeeder
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 DATABASE STATISTICS
+
+  Total Tables:           10
+  Core Tables:            4 (users, appointments, services, blogs)
+  Supporting Tables:      6 (cache, jobs, sessions, etc.)
+  Foreign Keys:           3
+  Enum Fields:            3 (role, status, blog status)
+  JSON Fields:            1 (blog tags)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎉 SPRINT 1 COMPLETE!
+
+Database:               MySQL
+Framework:              Laravel 12
+Status:                 ✅ All migrations successful
+Models:                 ✅ All models created with relationships
+Features:               ✅ All requirements met
+
+Ready for Sprint 2: API Controllers & Routes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
