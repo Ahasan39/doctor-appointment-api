@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\AppointmentController;
+use App\Http\Controllers\Api\Admin\ServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -70,7 +71,13 @@ Route::prefix('v1')->group(function () {
         // Route::apiResource('patients', PatientController::class);
         
         // Services management (admin only)
-        // Route::apiResource('services', ServiceController::class);
+        Route::prefix('services')->group(function () {
+            Route::get('/statistics', [ServiceController::class, 'statistics']);
+            Route::post('/reorder', [ServiceController::class, 'reorder']);
+            Route::post('/{id}/activate', [ServiceController::class, 'activate']);
+            Route::post('/{id}/deactivate', [ServiceController::class, 'deactivate']);
+        });
+        Route::apiResource('services', ServiceController::class);
         
         // Blogs management (admin only)
         // Route::apiResource('blogs', BlogController::class);
