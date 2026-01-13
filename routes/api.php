@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\AppointmentController;
 use App\Http\Controllers\Api\Admin\ServiceController;
+use App\Http\Controllers\Api\Admin\BlogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -80,6 +81,14 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('services', ServiceController::class);
         
         // Blogs management (admin only)
-        // Route::apiResource('blogs', BlogController::class);
+        Route::prefix('blogs')->group(function () {
+            Route::get('/statistics', [BlogController::class, 'statistics']);
+            Route::get('/categories', [BlogController::class, 'categories']);
+            Route::get('/tags', [BlogController::class, 'tags']);
+            Route::post('/{id}/publish', [BlogController::class, 'publish']);
+            Route::post('/{id}/unpublish', [BlogController::class, 'unpublish']);
+            Route::post('/{id}/archive', [BlogController::class, 'archive']);
+        });
+        Route::apiResource('blogs', BlogController::class);
     });
 });
