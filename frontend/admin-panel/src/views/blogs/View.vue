@@ -58,7 +58,7 @@
             <dt class="text-sm font-medium text-gray-500">Views</dt>
             <dd class="mt-1 text-sm text-gray-900">{{ blog.views_count || 0 }}</dd>
           </div>
-          <div v-if="blog.tags" class="sm:col-span-2">
+          <div v-if="blog.tags && typeof blog.tags === 'string'" class="sm:col-span-2">
             <dt class="text-sm font-medium text-gray-500">Tags</dt>
             <dd class="mt-1 flex flex-wrap gap-2">
               <span v-for="tag in blog.tags.split(',')" :key="tag" class="badge badge-gray">
