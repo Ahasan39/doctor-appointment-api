@@ -48,11 +48,15 @@
           </div>
           <div>
             <dt class="text-sm font-medium text-gray-500">Author</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ blog.author || 'Admin' }}</dd>
+            <dd class="mt-1 text-sm text-gray-900">
+              {{ typeof blog.author === 'object' ? blog.author.name : (blog.author || 'Admin') }}
+            </dd>
           </div>
           <div>
             <dt class="text-sm font-medium text-gray-500">Reading Time</dt>
-            <dd class="mt-1 text-sm text-gray-900">{{ blog.reading_time || 'N/A' }} minutes</dd>
+            <dd class="mt-1 text-sm text-gray-900">
+              {{ blog.reading_time ? `${blog.reading_time} min${blog.reading_time > 1 ? 's' : ''} read` : 'N/A' }}
+            </dd>
           </div>
           <div>
             <dt class="text-sm font-medium text-gray-500">Views</dt>
