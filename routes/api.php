@@ -5,6 +5,11 @@ use App\Http\Controllers\Api\Admin\AppointmentController;
 use App\Http\Controllers\Api\Admin\ServiceController;
 use App\Http\Controllers\Api\Admin\BlogController;
 use App\Http\Controllers\Api\Admin\DoctorController;
+use App\Http\Controllers\Api\PublicServiceController;
+use App\Http\Controllers\Api\PublicDoctorController;
+use App\Http\Controllers\Api\PublicBlogController;
+use App\Http\Controllers\Api\PublicAppointmentController;
+use App\Http\Controllers\Api\ContactController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +40,50 @@ Route::get('/health', function () {
 */
 Route::prefix('v1')->group(function () {
     
+    /*
+    |--------------------------------------------------------------------------
+    | Public Routes (No Authentication Required)
+    |--------------------------------------------------------------------------
+    */
+    
+    // Public Services
+    Route::prefix('services')->group(function () {
+        Route::get('/', [PublicServiceController::class, 'index']);
+        Route::get('/featured', [PublicServiceController::class, 'featured']);
+        Route::get('/{slug}', [PublicServiceController::class, 'show']);
+    });
+
+    // Public Doctors
+    Route::prefix('doctors')->group(function () {
+        Route::get('/', [PublicDoctorController::class, 'index']);
+        Route::get('/featured', [PublicDoctorController::class, 'featured']);
+        Route::get('/specializations', [PublicDoctorController::class, 'specializations']);
+        Route::get('/{id}', [PublicDoctorController::class, 'show']);
+    });
+
+    // Public Blogs
+    Route::prefix('blogs')->group(function () {
+        Route::get('/', [PublicBlogController::class, 'index']);
+        Route::get('/featured', [PublicBlogController::class, 'featured']);
+        Route::get('/categories', [PublicBlogController::class, 'categories']);
+        Route::get('/tags', [PublicBlogController::class, 'tags']);
+        Route::get('/{slug}', [PublicBlogController::class, 'show']);
+        Route::get('/{slug}/related', [PublicBlogController::class, 'related']);
+    });
+
+    // Public Appointments (Booking)
+    Route::prefix('appointments')->group(function () {
+        Route::post('/', [PublicAppointmentController::class, 'store']);
+        Route::get('/available-slots', [PublicAppointmentController::class, 'availableSlots']);
+        Route::post('/check-status', [PublicAppointmentController::class, 'checkStatus']);
+    });
+
+    // Contact Form
+    Route::prefix('contact')->group(function () {
+        Route::post('/', [ContactController::class, 'submit']);
+        Route::get('/info', [ContactController::class, 'info']);
+    });
+
     /*
     |--------------------------------------------------------------------------
     | Admin Authentication Routes (Public)

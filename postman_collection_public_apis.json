@@ -1,0 +1,365 @@
+{
+  "info": {
+    "name": "Doctor Appointment API - Public APIs",
+    "description": "Complete collection of public endpoints (no authentication required)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "doctor-appointment-api"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public Services",
+      "item": [
+        {
+          "name": "List All Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/services",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "services"]
+            }
+          }
+        },
+        {
+          "name": "List Services with Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/services?search=consultation&min_price=50&max_price=200&sort_by=price&sort_order=asc&per_page=10",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "services"],
+              "query": [
+                {"key": "search", "value": "consultation"},
+                {"key": "min_price", "value": "50"},
+                {"key": "max_price", "value": "200"},
+                {"key": "sort_by", "value": "price"},
+                {"key": "sort_order", "value": "asc"},
+                {"key": "per_page", "value": "10"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Featured Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/services/featured",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "services", "featured"]
+            }
+          }
+        },
+        {
+          "name": "View Service by Slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/services/general-consultation",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "services", "general-consultation"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public Doctors",
+      "item": [
+        {
+          "name": "List All Doctors",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/doctors",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "doctors"]
+            }
+          }
+        },
+        {
+          "name": "List Doctors with Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/doctors?search=cardiology&specialization=Cardiology&min_fee=100&max_fee=300&sort_by=consultation_fee&per_page=10",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "doctors"],
+              "query": [
+                {"key": "search", "value": "cardiology"},
+                {"key": "specialization", "value": "Cardiology"},
+                {"key": "min_fee", "value": "100"},
+                {"key": "max_fee", "value": "300"},
+                {"key": "sort_by", "value": "consultation_fee"},
+                {"key": "per_page", "value": "10"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Featured Doctors",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/doctors/featured",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "doctors", "featured"]
+            }
+          }
+        },
+        {
+          "name": "List Specializations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/doctors/specializations",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "doctors", "specializations"]
+            }
+          }
+        },
+        {
+          "name": "View Doctor Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/doctors/2",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "doctors", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public Blogs",
+      "item": [
+        {
+          "name": "List All Blogs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/blogs",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "blogs"]
+            }
+          }
+        },
+        {
+          "name": "List Blogs with Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/blogs?search=health&category=Health Tips&sort_by=views_count&sort_order=desc&per_page=10",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "blogs"],
+              "query": [
+                {"key": "search", "value": "health"},
+                {"key": "category", "value": "Health Tips"},
+                {"key": "sort_by", "value": "views_count"},
+                {"key": "sort_order", "value": "desc"},
+                {"key": "per_page", "value": "10"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Featured Blogs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/blogs/featured",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "blogs", "featured"]
+            }
+          }
+        },
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/blogs/categories",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "blogs", "categories"]
+            }
+          }
+        },
+        {
+          "name": "List Tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/blogs/tags",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "blogs", "tags"]
+            }
+          }
+        },
+        {
+          "name": "View Blog Post",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/blogs/10-tips-healthy-heart",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "blogs", "10-tips-healthy-heart"]
+            }
+          }
+        },
+        {
+          "name": "Get Related Blogs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/blogs/10-tips-healthy-heart/related",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "blogs", "10-tips-healthy-heart", "related"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public Appointments",
+      "item": [
+        {
+          "name": "Check Available Slots",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/appointments/available-slots?doctor_id=2&date=2025-12-31",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "appointments", "available-slots"],
+              "query": [
+                {"key": "doctor_id", "value": "2"},
+                {"key": "date", "value": "2025-12-31"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Book Appointment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patient_name\": \"John Doe\",\n  \"patient_email\": \"john.doe@email.com\",\n  \"patient_phone\": \"+1234567890\",\n  \"doctor_id\": 2,\n  \"service_id\": 1,\n  \"appointment_date\": \"2025-12-31\",\n  \"appointment_time\": \"14:00\",\n  \"notes\": \"First time visit\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/appointments",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "appointments"]
+            }
+          }
+        },
+        {
+          "name": "Check Appointment Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patient_email\": \"john.doe@email.com\",\n  \"patient_phone\": \"+1234567890\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/appointments/check-status",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "appointments", "check-status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "item": [
+        {
+          "name": "Get Contact Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/contact/info",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "contact", "info"]
+            }
+          }
+        },
+        {
+          "name": "Submit Contact Form",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Smith\",\n  \"email\": \"jane.smith@email.com\",\n  \"phone\": \"+1234567890\",\n  \"subject\": \"Inquiry about services\",\n  \"message\": \"I would like to know more about your cardiology services.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/contact",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "contact"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000/api",
+      "type": "string"
+    }
+  ]
+}
