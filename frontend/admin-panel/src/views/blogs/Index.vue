@@ -97,7 +97,9 @@
                   <span class="badge badge-info">{{ blog.category }}</span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ blog.author || 'Admin' }}</div>
+                  <div class="text-sm text-gray-900">
+                    {{ typeof blog.author === 'object' ? blog.author.name : (blog.author || 'Admin') }}
+                  </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span :class="getStatusClass(blog.status)">
